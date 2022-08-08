@@ -15,6 +15,6 @@ downloads = aria2.get_downloads()
 for download in downloads:
     print(download.name, download.download_speed)
 
-# http_uri = "https://img.alicdn.com/imgextra/i4/O1CN01sBgsI61EaaWZghWN9_!!6000000000368-2-tps-484-316.png"
-#
-# download = aria2.add(http_uri)
+http_uri = "https://img.alicdn.com/imgextra/i4/O1CN01sBgsI61EaaWZghWN9_!!6000000000368-2-tps-484-316.png"
+
+download = aria2.add(http_uri, {'out': '123.png'})
