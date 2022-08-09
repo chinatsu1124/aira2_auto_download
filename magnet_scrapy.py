@@ -20,8 +20,9 @@ def analyse_text(text):
     item_dict = {}
     root = ET.fromstring(text)
     for item in root.iter('item'):
-        r = re.search(r"\[\d{2}]", item.find('title').text).group()
-        item_dict[r] = item.find('enclosure').get('url')
+        # r = re.search(r"\[\d{2}]", item.find('title').text).group()
+        item_dict[item.find('title').text] = item.find('enclosure').get('url')
+        # item_dict[r] = item.find('enclosure').get('url')
     return item_dict
     # r = re.findall(r"magnet:\?xt=urn:btih:\w*", text)
     # for url in r:
