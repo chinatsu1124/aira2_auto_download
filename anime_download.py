@@ -1,4 +1,5 @@
 import aria2p
+import magnet_scrapy as ms
 
 # initialization, these are the default values
 aria2 = aria2p.API(
@@ -9,12 +10,7 @@ aria2 = aria2p.API(
     )
 )
 
-# list downloads
-downloads = aria2.get_downloads()
-
-for download in downloads:
-    print(download.name, download.download_speed)
-
-http_uri = "https://img.alicdn.com/imgextra/i4/O1CN01sBgsI61EaaWZghWN9_!!6000000000368-2-tps-484-316.png"
-
-download = aria2.add(http_uri, {'out': '123.png'})
+keyword_url = 'https://share.dmhy.org/topics/rss/rss.xml?keyword=【喵萌奶茶屋】+异世界舅舅+1080+简日双语'
+item_dict = ms.analyse_text(ms.get_magnets(keyword_url).text)
+for key in item_dict:
+    aria2.add_magnet(item_dict[key])
