@@ -34,6 +34,7 @@ def batch_add_magnets(magnets: dict):
             aria2.add_magnet(value)
             print(f'成功添加第{key}集下载任务。')
 
+
 # 获取已下载集列表
 def get_episode_list(path: str):
     episode_list = []
