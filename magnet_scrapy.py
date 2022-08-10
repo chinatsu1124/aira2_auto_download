@@ -17,7 +17,7 @@ def get_magnets(url):
         return 0
 
 
-def analyse_url(xml):
+def analyse_xml(xml):
     item_dict = {}
     root = ET.fromstring(xml)
     for item in root.iter('item'):
