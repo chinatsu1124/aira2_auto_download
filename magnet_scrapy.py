@@ -29,6 +29,3 @@ def analyse_xml(xml):
         else:
             print(item.find('title').text+':重复,已舍弃。')
     return item_dict
-    # r = re.findall(r"magnet:\?xt=urn:btih:\w*", text)
-    # for url in r:
-    #     print(url)
