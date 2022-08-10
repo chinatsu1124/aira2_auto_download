@@ -5,21 +5,21 @@ import xml.etree.ElementTree as ET
 
 def get_magnets(url):
     try:
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         if r.status_code == 200:
-            return r
+            print('获取xml成功')
+            return r.text
         else:
             print(f'网络错误代码为{r.status_code}')
             return 0
-    except:
-        print('网络连接未响应')
+    except requests.exceptions.ConnectTimeout:
+        print('网络连接超时')
         return 0
 
 
-def analyse_url(url):
-    text = get_magnets(url).text
+def analyse_url(xml):
     item_dict = {}
-    root = ET.fromstring(text)
+    root = ET.fromstring(xml)
     for item in root.iter('item'):
         r = re.search(r"\[(\d{2})]", item.find('title').text).group(1)
         item_dict[r] = item.find('enclosure').get('url')

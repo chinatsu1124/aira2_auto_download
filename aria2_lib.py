@@ -18,7 +18,7 @@ def batch_del_downloads(keyword: str):
                 print(f'{download.gid}:删除成功。')
 
 
-def batch_add_magnets(magnets: dict):
+def batch_add_magnets(anime_name: str, magnets: dict):
     aria2 = aria2p.API(
         aria2p.Client(
             host="http://127.0.0.1",
@@ -26,13 +26,13 @@ def batch_add_magnets(magnets: dict):
             secret="hcy1997912"
         )
     )
-    episode_list = get_episode_list(r'/home/chinatsu1124/disk2/影视/剧集/Uncle from Another World (2022)/Season 1')
+    episode_list = get_episode_list(f'/home/chinatsu1124/disk2/影视/剧集/{anime_name}/Season 1')
     for key, value in magnets.items():
         if key in episode_list:
-            print(f'第{key}集已存在。')
+            print(f'{anime_name}:第{key}集已存在。')
         else:
             aria2.add_magnet(value)
-            print(f'成功添加第{key}集下载任务。')
+            print(f'{anime_name}:成功添加第{key}集下载任务。')
 
 
 # 获取已下载集列表
