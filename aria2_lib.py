@@ -35,7 +35,7 @@ def batch_add_magnets(anime_name: str, anime_dir: str, magnets: dict):
             print(f'{anime_name}:第{key}集已存在。')
         else:
             download = aria2.add_magnet(value)
-            move_dict[download.gid] = os.path.join(anime_dir, f'{anime_name} S01E{key}')
+            move_dict[download.gid] = os.path.join(anime_dir, f'{anime_name} S01E{key}.mp4')
             print(f'{anime_name}:成功添加第{key}集下载任务。')
     return move_dict
 
