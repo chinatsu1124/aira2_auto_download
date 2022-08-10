@@ -2,6 +2,7 @@ import magnet_scrapy as ms
 import aria2_lib as aria2
 from anime import Anime
 import time
+import os
 
 animes = [Anime(name='Lycoris Recoil',
                 year='2022',
@@ -31,7 +32,7 @@ for anime in animes:
                 time.sleep(20)
                 print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
                 for gid, save_path in move_dict.items():
-                    progress = aria2.show_progress_by_gid(gid)
-                    if progress == 100:
-                        count -= aria2.place_on_file(gid, save_path)
-            print('下载并移动完成。')
+                    follow_download_gid, follow_download_progress = aria2.get_follow_progress_by_gid(gid)
+                    if follow_download_progress == 100 and not aria2.get_is_complete(follow_download_gid):
+                        count -= aria2.place_on_file(follow_download_gid, save_path)
+            print(f'{anime.name}:番剧下载并归档完成。')

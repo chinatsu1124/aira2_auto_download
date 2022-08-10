@@ -3,16 +3,17 @@ import os
 import re
 import shutil
 
-
-def batch_del_downloads(keyword: str):
-    aria2 = aria2p.API(
+__aria2__ = aria2p.API(
         aria2p.Client(
             host="http://127.0.0.1",
             port=6800,
             secret="hcy1997912"
         )
     )
-    for download in aria2.get_downloads():
+
+
+def batch_del_downloads(keyword: str):
+    for download in __aria2__.get_downloads():
         if keyword in download.name:
             res = download.remove()
             if res:
@@ -20,13 +21,6 @@ def batch_del_downloads(keyword: str):
 
 
 def batch_add_magnets(anime_name: str, anime_dir: str, magnets: dict):
-    aria2 = aria2p.API(
-        aria2p.Client(
-            host="http://127.0.0.1",
-            port=6800,
-            secret="hcy1997912"
-        )
-    )
     anime_dir = f'/home/chinatsu1124/disk2/影视/剧集/{anime_dir}/Season 1'
     episode_list = get_episode_list(anime_dir)
     move_dict = {}
@@ -34,7 +28,7 @@ def batch_add_magnets(anime_name: str, anime_dir: str, magnets: dict):
         if key in episode_list:
             print(f'{anime_name}:第{key}集已存在。')
         else:
-            download = aria2.add_magnet(value)
+            download = __aria2__.add_magnet(value)
             move_dict[download.gid] = os.path.join(anime_dir, f'{anime_name} S01E{key}.mp4')
             print(f'{anime_name}:成功添加第{key}集下载任务。')
     return move_dict
@@ -50,29 +44,28 @@ def get_episode_list(path: str):
     return episode_list
 
 
-def show_progress_by_gid(gid):
-    aria2 = aria2p.API(
-        aria2p.Client(
-            host="http://127.0.0.1",
-            port=6800,
-            secret="hcy1997912"
-        )
-    )
-    download = aria2.get_download(gid)
-    print(f'{download.name}:{download.progress}')
-    return download.progress
+def get_follow_progress_by_gid(gid):
+    download = __aria2__.get_download(gid)
+    try:
+        follow_download = download.followed_by[0]
+        print(f'{follow_download.name}:{follow_download.progress}')
+        return follow_download.gid, follow_download.progress
+    except IndexError:
+        print(f'{download.gid}:未完成METADATA下载')
+        return '0', 0
 
 
 def place_on_file(gid, save_path):
-    aria2 = aria2p.API(
-        aria2p.Client(
-            host="http://127.0.0.1",
-            port=6800,
-            secret="hcy1997912"
-        )
-    )
-    download = aria2.get_download(gid)
+    download = __aria2__.get_download(gid)
     download_path = download.files[0].path
     download.remove()
-    shutil.move(download_path, save_path)
-    return 1
+    try:
+        shutil.move(download_path, save_path)
+        return 1
+    except FileNotFoundError:
+        return 0
+
+
+def get_is_complete(gid):
+    download = __aria2__.get_download(gid)
+    return download.is_complete

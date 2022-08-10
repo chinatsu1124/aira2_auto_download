@@ -4,17 +4,20 @@ import xml.etree.ElementTree as ET
 
 
 def get_magnets(url):
-    try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            print('获取xml成功')
-            return r.text
-        else:
-            print(f'网络错误代码为{r.status_code}')
-            return 0
-    except requests.exceptions.ConnectTimeout:
-        print('网络连接超时')
-        return 0
+    i = 0
+    while True:
+        try:
+            r = requests.get(url, timeout=5)
+            if r.status_code == 200:
+                print('获取xml成功')
+                return r.text
+            else:
+                print(f'网络错误代码为{r.status_code}')
+                return 0
+        except requests.exceptions.ConnectTimeout:
+            print(f'网络连接超时,重试第{i}次')
+            i += 1
+    return 0
 
 
 def analyse_xml(xml):
