@@ -16,7 +16,8 @@ def get_magnets(url):
         return 0
 
 
-def analyse_text(text):
+def analyse_url(url):
+    text = get_magnets(url)
     item_dict = {}
     root = ET.fromstring(text)
     for item in root.iter('item'):
