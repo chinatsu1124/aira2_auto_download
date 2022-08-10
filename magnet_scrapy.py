@@ -22,12 +22,13 @@ def analyse_xml(xml):
     root = ET.fromstring(xml)
     for item in root.iter('item'):
         r = re.search(r"\[(\d{2})]", item.find('title').text).group(1)
-        item_dict[r] = item.find('enclosure').get('url')
+        # 因为资源是从新到旧,所以后续如果有重复集即舍弃
+        if r not in item_dict:
+            item_dict[r] = item.find('enclosure').get('url')
         # item_dict[item.find('title').text] = item.find('enclosure').get('url')
+        else:
+            print(item.find('title').text+':重复,已舍弃。')
     return item_dict
     # r = re.findall(r"magnet:\?xt=urn:btih:\w*", text)
     # for url in r:
     #     print(url)
-
-
-
