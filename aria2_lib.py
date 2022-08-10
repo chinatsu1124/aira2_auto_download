@@ -27,7 +27,7 @@ def batch_add_magnets(magnets: dict):
         )
     )
     episode_list = get_episode_list(r'/home/chinatsu1124/disk2/影视/剧集/Uncle from Another World (2022)/Season 1')
-    for key, value in magnets:
+    for key, value in magnets.items():
         if key in episode_list:
             print(f'第{key}集已存在。')
         else:
