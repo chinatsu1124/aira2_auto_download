@@ -38,7 +38,7 @@ def batch_add_magnets(anime_name: str, anime_dir: str, anime_season, magnets: di
 def get_episode_list(path: str):
     episode_list = []
     for file_name in os.listdir(path):
-        episode = re.search(r'S01E(\d{2})', file_name).group(1)
+        episode = re.search(r'E(\d{2})', file_name).group(1)
         episode_list.append(episode)
     print(episode_list)
     return episode_list
