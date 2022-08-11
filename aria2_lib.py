@@ -20,8 +20,8 @@ def batch_del_downloads(keyword: str):
                 print(f'{download.gid}:删除成功。')
 
 
-def batch_add_magnets(anime_name: str, anime_dir: str, magnets: dict):
-    anime_dir = f'/home/chinatsu1124/disk2/影视/剧集/{anime_dir}/Season 1'
+def batch_add_magnets(anime_name: str, anime_dir: str, anime_season, magnets: dict):
+    anime_dir = f'/home/chinatsu1124/disk2/影视/剧集/{anime_dir}/Season {int(anime_season)}'
     episode_list = get_episode_list(anime_dir)
     move_dict = {}
     for key, value in magnets.items():
@@ -29,7 +29,7 @@ def batch_add_magnets(anime_name: str, anime_dir: str, magnets: dict):
             print(f'{anime_name}:第{key}集已存在。')
         else:
             download = __aria2__.add_magnet(value)
-            move_dict[download.gid] = os.path.join(anime_dir, f'{anime_name} S01E{key}.mp4')
+            move_dict[download.gid] = os.path.join(anime_dir, f'{anime_name} S{anime_season}E{key}.mp4')
             print(f'{anime_name}:成功添加第{key}集下载任务。')
     return move_dict
 
