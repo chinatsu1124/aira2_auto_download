@@ -45,4 +45,4 @@ for anime in animes:
                     if follow_download_progress == 100 and not aria2.get_is_complete(follow_download_gid):
                         count -= aria2.place_on_file(follow_download_gid, save_path)
             print(f'{anime.name}:番剧下载并归档完成。')
-            print('-' * 20)
+    print('-' * 20)
