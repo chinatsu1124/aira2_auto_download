@@ -4,20 +4,12 @@ import re
 import shutil
 
 __aria2__ = aria2p.API(
-        aria2p.Client(
-            host="http://127.0.0.1",
-            port=6800,
-            secret="hcy1997912"
-        )
+    aria2p.Client(
+        host="http://127.0.0.1",
+        port=6800,
+        secret="hcy1997912"
     )
-
-
-def batch_del_downloads(keyword: str):
-    for download in __aria2__.get_downloads():
-        if keyword in download.name:
-            res = download.remove()
-            if res:
-                print(f'{download.gid}:删除成功。')
+)
 
 
 def batch_add_magnets(anime_name: str, anime_dir: str, anime_season, magnets: dict):
@@ -40,7 +32,6 @@ def get_episode_list(path: str):
     for file_name in os.listdir(path):
         episode = re.search(r'E(\d{2})', file_name).group(1)
         episode_list.append(episode)
-    print(episode_list)
     return episode_list
 
 
@@ -69,3 +60,11 @@ def place_on_file(gid, save_path):
 def get_is_complete(gid):
     download = __aria2__.get_download(gid)
     return download.is_complete
+
+
+def batch_del_downloads(keyword: str):
+    for download in __aria2__.get_downloads():
+        if keyword in download.name:
+            res = download.remove()
+            if res:
+                print(f'{download.gid}:删除成功。')

@@ -28,7 +28,6 @@ def analyse_xml(xml):
         # 因为资源是从新到旧,所以后续如果有重复集即舍弃
         if r not in item_dict:
             item_dict[r] = item.find('enclosure').get('url')
-        # item_dict[item.find('title').text] = item.find('enclosure').get('url')
         else:
-            print(item.find('title').text+':重复,已舍弃。')
+            print(item.find('title').text + ':重复,已舍弃。')
     return item_dict
