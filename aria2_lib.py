@@ -12,17 +12,19 @@ __aria2__ = aria2p.API(
 )
 
 
-def batch_add_magnets(anime_name: str, anime_dir: str, anime_season, magnets: dict):
-    anime_dir = f'/home/chinatsu1124/disk2/影视/剧集/{anime_dir}/Season {int(anime_season)}'
-    episode_list = get_episode_list(anime_dir)
+def batch_add_magnets(anime_name: str, anime_dir_name: str, season, magnets: dict):
+    anime_season_path = f"/home/chinatsu1124/disk2/影视/剧集/{anime_dir_name}/Season {int(season)}"
+    if not os.path.exists(anime_season_path):
+        os.makedirs(anime_season_path)
+    episode_list = get_episode_list(anime_season_path)
     move_dict = {}
-    for key, value in magnets.items():
-        if key in episode_list:
-            print(f'{anime_name}:第{key}集已存在。')
+    for episode, magnet in magnets.items():
+        if episode in episode_list:
+            print(f'{anime_name}:第{episode}集已存在。')
         else:
-            download = __aria2__.add_magnet(value)
-            move_dict[download.gid] = os.path.join(anime_dir, f'{anime_name} S{anime_season}E{key}.mp4')
-            print(f'{anime_name}:成功添加第{key}集下载任务。')
+            download = __aria2__.add_magnet(magnet)
+            move_dict[download.gid] = os.path.join(anime_season_path, f'{anime_name} S{season}E{episode}.mp4')
+            print(f'{anime_name}:成功添加第{episode}集下载任务。')
     return move_dict
 
 
