@@ -7,15 +7,18 @@ def get_magnets(url):
     i = 0
     while True:
         try:
-            r = requests.get(url, timeout=5)
-            if r.status_code == 200:
-                print('获取xml成功')
-                return r.text
-            else:
-                print(f'网络错误代码为{r.status_code}')
-                return 0
+            with requests.get(url, timeout=10, stream=True) as r:
+                if r.status_code == 200:
+                    print('获取xml成功')
+                    return r.text
+                else:
+                    print(f'网络错误代码为{r.status_code}')
+                    return 0
         except requests.exceptions.ConnectTimeout:
             print(f'网络连接超时,重试第{i}次')
+        except requests.exceptions.ReadTimeout:
+            print(f'网络连接读取超时,重试第{i}次')
+        finally:
             i += 1
     return 0
 
